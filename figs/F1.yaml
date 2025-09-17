@@ -1,28 +1,34 @@
 title: "EphB1 缺失降低线粒体膜电位"
 out: "F1"
 size:
-  width_mm: 183   # 多类别时建议双栏；如需单栏就 89
-
+  width_mm: 44.5   # 多类别时建议双栏；如需单栏就 89
+  high_mm: 42.5
+constrained_layout: true
 panels:
   - id: a
     type: box
-    data: data/E32_stats.xlsx
+    data: "/Users/gongbaoming/Library/CloudStorage/OneDrive-个人/发育生物所/博士课题/EphB1/04_data/interim/microplate_reader/ldh检测焦亡水平/ldh原始数据_long_split/E18_stats.xlsx"
     mapping:
       x: "drug"
       y: "normalized"
-      hue: "group"          # WT/HO
+      hue: "genetype"         # WT/HO
     # 写“真实存在且拼写一致”的类别值；大小写/空格要与数据一致
     order:
-      - "lysis"
-      - "lps4h+nigeiricin1.5h"
-      - "lps4h+nigeiricin2h"
-      - "lps4h+nigeiricin4h"
-    hue_order: ["blank", "negtive", "positive", "experiment"]
-    x_label: "处理（无单位）"
-    y_label: "归一化（a.u.）"
+      - "medium"
+      - "lps4h+nigeiricin1h"
+      - "lps4h+Flagellin2h"
+      - "lps4h+Poly (dA:dT)8h"
+      - "lps4h+nigeiricin8h"
+    hue_order: ["WT", "HO"]
+    x_label: ""
+    y_label: "Normalized to positive"
+
+    x_tick_rotation: 30    # 只针对这一张图，将 x 轴刻度标签旋转 30°
+      
     strip: true            # 叠加散点
     stats:                 # 可选：显著性标注
       enabled: true
-      test: "mannwhitneyu" # 检验方法，可改 ttest_ind
-      pairs: [["WT", "HO"]]
-      p_adjust: "bonferroni"
+      source: "/Users/gongbaoming/Library/CloudStorage/OneDrive-个人/发育生物所/博士课题/EphB1/04_data/interim/microplate_reader/ldh检测焦亡水平/ldh原始数据_long_split/E18_stats.xlsx"   # ✅ 指向存有 p 值的文件
+      sheet: "pair_stats"
+      column: p_value                 # ✅ 指明哪一列存 p 值
+      pairs: [["WT", "HO"]]           # ✅ 仍指明需要比较的组
