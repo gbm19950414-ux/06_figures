@@ -1,0 +1,28 @@
+title: "EphB1 缺失降低线粒体膜电位"
+out: "F1"
+size:
+  width_mm: 183   # 多类别时建议双栏；如需单栏就 89
+
+panels:
+  - id: a
+    type: box
+    data: data/E32_stats.xlsx
+    mapping:
+      x: "drug"
+      y: "normalized"
+      hue: "group"          # WT/HO
+    # 写“真实存在且拼写一致”的类别值；大小写/空格要与数据一致
+    order:
+      - "lysis"
+      - "lps4h+nigeiricin1.5h"
+      - "lps4h+nigeiricin2h"
+      - "lps4h+nigeiricin4h"
+    hue_order: ["blank", "negtive", "positive", "experiment"]
+    x_label: "处理（无单位）"
+    y_label: "归一化（a.u.）"
+    strip: true            # 叠加散点
+    stats:                 # 可选：显著性标注
+      enabled: true
+      test: "mannwhitneyu" # 检验方法，可改 ttest_ind
+      pairs: [["WT", "HO"]]
+      p_adjust: "bonferroni"

@@ -1,1 +1,40 @@
 # rcparams placeholder
+# rcparams.yaml
+rcparams:
+  "figure.figsize": [1.65, 1.63]
+  "font.size": 7
+  "axes.labelsize": 7
+  "axes.titlesize": 7
+  "xtick.labelsize": 5
+  "ytick.labelsize": 5
+  "axes.titlelocation": "left"
+  "axes.titley": 1.0
+  "axes.titlepad": 2.0
+  "lines.markersize": 1
+  "lines.markeredgewidth": 0.5
+  "errorbar.capsize": 2.5
+  "font.family": "sans-serif"
+  "font.sans-serif": ["Arial", "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "Noto Sans CJK SC", "Arial Unicode MS", "DejaVu Sans"]
+  "pdf.fonttype": 42
+  "ps.fonttype": 42
+  "savefig.format": "pdf"
+  "savefig.dpi": 450
+  "figure.autolayout": false
+  "axes.grid": false
+  "axes.spines.right": false
+  "axes.spines.top": false
+  "legend.fontsize": 5
+  "lines.linewidth": 0.5
+  "axes.linewidth": 0.5
+  "xtick.direction": "out"
+  "ytick.direction": "out"
+  "xtick.major.size": 2.5
+  "ytick.major.size": 2.5
+  "xtick.major.width": 0.5
+  "ytick.major.width": 0.5
+  "xtick.minor.visible": false
+  "ytick.minor.visible": false
+  "xtick.minor.size": 1.5
+  "ytick.minor.size": 1.5
+  "xtick.minor.width": 0.5
+  "ytick.minor.width": 0.5
