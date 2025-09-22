@@ -9,6 +9,7 @@ from .registry import PLOTTERS
 def render_one(fig_yaml, style_dir, out_dir):
     with open(fig_yaml, "r", encoding="utf-8") as f:
         spec = yaml.safe_load(f)
+    base_name = Path(fig_yaml).stem
 
     # 加载并合并样式配置
     style = {}
@@ -26,26 +27,26 @@ def render_one(fig_yaml, style_dir, out_dir):
     # 应用全局 rcParams
     plt.rcParams.update(style.get("rcparams", {}))
 
-    panel = spec["panels"][0]
-    typ = panel["type"]
-    plotter = PLOTTERS[typ]
+    for panel in spec["panels"]:
+        typ = panel["type"]
+        plotter = PLOTTERS[typ]
 
-    use_constrained = spec.get("constrained_layout", False) or panel.get("constrained_layout", False)
-
-    # 如果有单图尺寸，按毫米换算成英寸
-    size_cfg = spec.get("size", {}) or panel.get("size", {})
-    if size_cfg:
-        w = size_cfg.get("width_mm")
-        h = size_cfg.get("high_mm") or size_cfg.get("height_mm")
-        if w and h:
-            fig, ax = plt.subplots(figsize=(w/25.4, h/25.4), constrained_layout=use_constrained)
+        use_constrained = spec.get("constrained_layout", False) or panel.get("constrained_layout", False)
+        size_cfg = spec.get("size", {}) or panel.get("size", {})
+        if size_cfg:
+            w = size_cfg.get("width_mm")
+            h = size_cfg.get("high_mm") or size_cfg.get("height_mm")
+            if w and h:
+                fig, ax = plt.subplots(figsize=(w/25.4, h/25.4), constrained_layout=use_constrained)
+            else:
+                fig, ax = plt.subplots(constrained_layout=use_constrained)
         else:
             fig, ax = plt.subplots(constrained_layout=use_constrained)
-    else:
-        fig, ax = plt.subplots(constrained_layout=use_constrained)
-    plotter(ax, panel, style)
 
-    out_path = Path(out_dir) / f"{spec.get('out', 'figure')}.pdf"
-    fig.savefig(out_path)
-    plt.close(fig)
-    print(f"✅ 已生成: {out_path}")
+        plotter(ax, panel, style)
+
+        out_name = f"{base_name}_{panel.get('id', 'panel')}.pdf"
+        out_path = Path(out_dir) / out_name
+        fig.savefig(out_path)
+        plt.close(fig)
+        print(f"✅ 已生成: {out_path}")

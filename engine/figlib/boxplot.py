@@ -32,7 +32,7 @@ def plot_box(ax, panel, style=None):
         palette=palette,                # ✅ 使用 palette
         ax=ax,
         linewidth=0.5,
-        width=0.6,
+        width=0.6,   # ✅ 允许 YAML 中设置 box_width
         fliersize=0,
         dodge=True                                 # ✅ 确保分组并排
     )
@@ -59,13 +59,13 @@ def plot_box(ax, panel, style=None):
         # 按照 YAML 中的 order 字段重新排序
         display_order = panel.get("order", [])
         if display_order:
-            pvals_df["drug"] = pd.Categorical(
-                pvals_df["drug"], categories=display_order, ordered=True
+            pvals_df[x_key] = pd.Categorical(
+                pvals_df[x_key], categories=display_order, ordered=True
             )
-            pvals_df = pvals_df.sort_values("drug")
+            pvals_df = pvals_df.sort_values(x_key)
         # 生成 pairs 和 pvals，保证顺序与绘图一致
         for _, row in pvals_df.iterrows():
-            drug = row["drug"]
+            drug = row[x_key]
             if pd.isna(drug):   # ✅ 跳过 drug 为空的比较
                 continue
             pairs.append(((drug, "WT"), (drug, "HO")))
@@ -92,6 +92,9 @@ def plot_box(ax, panel, style=None):
             )
             annot.set_pvalues(pvals)
             annot.annotate()
+    # 设置坐标轴范围
+    if "ylim" in panel:
+        ax.set_ylim(panel["ylim"])
     # 设置坐标轴标题，并确保留有足够的内边距
     ax.set_xlabel(panel.get("x_label", ""), labelpad=panel.get("x_labelpad", 4))
     ax.set_ylabel(panel.get("y_label", ""), labelpad=panel.get("y_labelpad", 10))
